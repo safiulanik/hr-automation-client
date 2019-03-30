@@ -61,8 +61,8 @@ class MenuDrawer extends React.Component {
               }
             ].map((menu) => {
               return (
-                <Link component={RouterLink} to={menu.url}>
-                  <ListItem button key={menu.name}>
+                <Link component={RouterLink} to={menu.url} key={menu.name}>
+                  <ListItem button>
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.name} />
                   </ListItem>

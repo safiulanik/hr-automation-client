@@ -11,6 +11,7 @@ import MenuDrawer from '../components/MenuDrawer';
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import Users from '../components/Users';
 import Requests from '../components/Requests';
+import Grid from '@material-ui/core/es/Grid/Grid';
 
 
 const drawerWidth = 240;
@@ -67,7 +68,7 @@ class Layout extends React.Component {
                 <MenuIcon />
               </IconButton>
               <Typography variant="h6" color="inherit" noWrap>
-                Responsive drawer
+                HR Automation
               </Typography>
             </Toolbar>
           </AppBar>
@@ -76,8 +77,12 @@ class Layout extends React.Component {
             mobileOpen={this.state.mobileOpen} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
-            <Route exact path="/requests" component={Requests} />
-            <Route exact path="/users" component={Users} />
+            <Grid container spacing={24}>
+              <Grid item xs={12}>
+                <Route exact path="/requests" component={Requests} />
+                <Route exact path="/users" component={Users} />
+              </Grid>
+            </Grid>
           </main>
         </div>
       </Router>
