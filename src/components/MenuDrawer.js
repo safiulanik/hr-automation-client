@@ -46,7 +46,7 @@ class MenuDrawer extends React.Component {
               },
               {
                 name: 'Requests',
-                url: '/request/list',
+                url: '/requests',
                 icon: <RequestIcon/>
               },
               {

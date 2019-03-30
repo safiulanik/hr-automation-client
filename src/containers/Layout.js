@@ -8,8 +8,9 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuDrawer from '../components/MenuDrawer';
-import { BrowserRouter as Router, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import Users from '../components/Users';
+import Requests from '../components/Requests';
 
 
 const drawerWidth = 240;
@@ -49,7 +50,7 @@ class Layout extends React.Component {
 
 
   render() {
-    const { classes, theme } = this.props;
+    const { classes } = this.props;
 
     return (
       <Router>
@@ -75,6 +76,8 @@ class Layout extends React.Component {
             mobileOpen={this.state.mobileOpen} />
           <main className={classes.content}>
             <div className={classes.toolbar} />
+            <Route exact path="/requests" component={Requests} />
+            <Route exact path="/users" component={Users} />
           </main>
         </div>
       </Router>
