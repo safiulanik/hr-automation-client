@@ -41,7 +41,7 @@ class MenuDrawer extends React.Component {
             {[
               {
                 name: 'Home',
-                url: '/layouts',
+                url: '/home',
                 icon: <HomeIcon/>
               },
               {
@@ -51,12 +51,12 @@ class MenuDrawer extends React.Component {
               },
               {
                 name: 'Users',
-                url: '/layouts/users',
+                url: '/users',
                 icon: <PeopleIcon/>
               },
               {
                 name: 'Logout',
-                url: '/layouts/logout',
+                url: '/logout',
                 icon: <LogoutIcon/>
               }
             ].map((menu) => {

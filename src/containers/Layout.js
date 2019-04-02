@@ -53,55 +53,41 @@ class Layout extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-
   render() {
     const { classes } = this.props;
-    const layoutInitial  = (
-      
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
-                HR Automation
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <MenuDrawer
-            handleDrawerToggle={this.handleDrawerToggle}
-            mobileOpen={this.state.mobileOpen} />
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-              <Router>
-                <Route exact path="/layouts/users" component={Users} />
-
-              </Router>
-              </Grid>
-            </Grid>
-          </main>
-        </div>
-        );
-
 
     return (
-      <div>
-      {
-        this.props.location.pathname.split('/')[1] === 'layouts'? layoutInitial: null
-      }
-      </div>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" noWrap>
+              HR Automation
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <MenuDrawer
+          handleDrawerToggle={this.handleDrawerToggle}
+          mobileOpen={this.state.mobileOpen} />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              {/*<Route exact path="/users" component={Users} />*/}
 
-      
-    );
+            </Grid>
+          </Grid>
+        </main>
+      </div>
+      );
   }
 }
 
