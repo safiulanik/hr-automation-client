@@ -6,6 +6,7 @@ import TableHead from '@material-ui/core/es/TableHead/TableHead';
 import TableRow from '@material-ui/core/es/TableRow/TableRow';
 import TableCell from '@material-ui/core/es/TableCell/TableCell';
 import TableBody from '@material-ui/core/es/TableBody/TableBody';
+import Layout from "../containers/Layout";
 
 const styles = theme => ({
   root: {
@@ -29,37 +30,46 @@ const rows = [
   createData('Safiul Kabir', 'abc@xyz.com', 'Engineer', 'Active'),
 ];
 
-class Users extends React.Component {}
+class Users extends React.Component {
+  constructor(props) {
+    super(props);
+    console.log(this.props);
+  }
 
-function UserTable(props) {
-  const { classes } = props;
+  render() {
+    const {classes} = this.props;
 
-  return (
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-        <TableHead>
-          <TableRow>
-            <TableCell>Name</TableCell>
-            <TableCell>Email</TableCell>
-            <TableCell>Role</TableCell>
-            <TableCell align="right">Status</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-          {rows.map(row => (
-            <TableRow key={row.id}>
-              <TableCell component="th" scope="row">
-                {row.name}
-              </TableCell>
-              <TableCell>{row.email}</TableCell>
-              <TableCell>{row.role}</TableCell>
-              <TableCell align="right">{row.status}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
-  )
+    return (
+      <div>
+        <Layout props={this.props}>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Role</TableCell>
+                  <TableCell align="right">Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map(row => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.role}</TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
+                    </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </Layout>
+      </div>
+    )
+  }
 }
 
-export default withStyles(styles)(UserTable);
+export default withStyles(styles)(Users);

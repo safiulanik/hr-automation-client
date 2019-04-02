@@ -30,6 +30,21 @@ const styles = theme => ({
 });
 
 class MenuDrawer extends React.Component {
+    constructor(props) {
+        super(props);
+        let isAuthenticated = false;
+        console.log(this.props);
+        try {
+            isAuthenticated = this.props.props.history.location.state.isAuthenticated;
+        } catch (e) {
+            console.log(e);
+            isAuthenticated = false;
+        }
+        console.log(isAuthenticated);
+        this.state = {isAuthenticated: isAuthenticated};
+        console.log(this.state.isAuthenticated);
+    }
+
     render() {
       const { classes, theme, mobileOpen } = this.props;
 
@@ -61,7 +76,10 @@ class MenuDrawer extends React.Component {
               }
             ].map((menu) => {
               return (
-                <Link component={RouterLink} to={menu.url} key={menu.name}>
+                <Link component={RouterLink} to={{
+                    pathname: menu.url,
+                    state: {isAuthenticated: true}
+                }} key={menu.name}>
                   <ListItem button>
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.name} />

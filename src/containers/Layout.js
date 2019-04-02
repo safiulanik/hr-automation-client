@@ -8,11 +8,8 @@ import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuDrawer from '../components/MenuDrawer';
-import { BrowserRouter as Router, Route } from "react-router-dom";
-import Users from '../components/Users';
-import Requests from '../components/Requests';
 import Grid from '@material-ui/core/es/Grid/Grid';
-
+import history from '../components/history';
 
 const drawerWidth = 240;
 
@@ -41,6 +38,24 @@ const styles = theme => ({
 });
 
 class Layout extends React.Component {
+
+  constructor(props) {
+    super(props);
+    let isAuthenticated = false;
+    console.log(this.props);
+    try {
+      isAuthenticated = this.props.location.state.isAuthenticated;
+    } catch (e) {
+      try {
+        isAuthenticated = this.props.props.location.state.isAuthenticated;
+      } catch (e) {
+        console.log(e);
+        isAuthenticated = false;
+      }
+    }
+    if(!isAuthenticated) history.push('/login');
+  }
+
   state = {
     mobileOpen: false,
   };
@@ -49,43 +64,38 @@ class Layout extends React.Component {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
   };
 
-
   render() {
     const { classes } = this.props;
-
     return (
-      <Router>
-        <div className={classes.root}>
-          <CssBaseline />
-          <AppBar position="fixed" className={classes.appBar}>
-            <Toolbar>
-              <IconButton
-                color="inherit"
-                aria-label="Open drawer"
-                onClick={this.handleDrawerToggle}
-                className={classes.menuButton}
-              >
-                <MenuIcon />
-              </IconButton>
-              <Typography variant="h6" color="inherit" noWrap>
-                HR Automation
-              </Typography>
-            </Toolbar>
-          </AppBar>
-          <MenuDrawer
-            handleDrawerToggle={this.handleDrawerToggle}
-            mobileOpen={this.state.mobileOpen} />
-          <main className={classes.content}>
-            <div className={classes.toolbar} />
-            <Grid container spacing={24}>
-              <Grid item xs={12}>
-                <Route exact path="/requests" component={Requests} />
-                <Route exact path="/users" component={Users} />
-              </Grid>
+      <div className={classes.root}>
+        <CssBaseline />
+        <AppBar position="fixed" className={classes.appBar}>
+          <Toolbar>
+            <IconButton
+              color="inherit"
+              aria-label="Open drawer"
+              onClick={this.handleDrawerToggle}
+              className={classes.menuButton}
+            >
+              <MenuIcon />
+            </IconButton>
+            <Typography variant="h6" color="inherit" noWrap>
+              HR Automation
+            </Typography>
+          </Toolbar>
+        </AppBar>
+        <MenuDrawer
+          handleDrawerToggle={this.handleDrawerToggle}
+          mobileOpen={this.state.mobileOpen} props={this.props} />
+        <main className={classes.content}>
+          <div className={classes.toolbar} />
+          <Grid container spacing={24}>
+            <Grid item xs={12}>
+              {this.props.children}
             </Grid>
-          </main>
-        </div>
-      </Router>
+          </Grid>
+        </main>
+      </div>
     );
   }
 }
