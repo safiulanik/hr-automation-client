@@ -44,6 +44,10 @@ class Layout extends React.Component {
   state = {
     mobileOpen: false,
   };
+  constructor(props) {
+    super(props)
+    console.log(props);
+  }
 
   handleDrawerToggle = () => {
     this.setState(state => ({ mobileOpen: !state.mobileOpen }));
@@ -52,9 +56,8 @@ class Layout extends React.Component {
 
   render() {
     const { classes } = this.props;
-
-    return (
-      <Router>
+    const layoutInitial  = (
+      
         <div className={classes.root}>
           <CssBaseline />
           <AppBar position="fixed" className={classes.appBar}>
@@ -79,13 +82,25 @@ class Layout extends React.Component {
             <div className={classes.toolbar} />
             <Grid container spacing={24}>
               <Grid item xs={12}>
-                <Route exact path="/requests" component={Requests} />
-                <Route exact path="/users" component={Users} />
+              <Router>
+                <Route exact path="/layouts/users" component={Users} />
+
+              </Router>
               </Grid>
             </Grid>
           </main>
         </div>
-      </Router>
+        );
+
+
+    return (
+      <div>
+      {
+        this.props.location.pathname.split('/')[1] === 'layouts'? layoutInitial: null
+      }
+      </div>
+
+      
     );
   }
 }
