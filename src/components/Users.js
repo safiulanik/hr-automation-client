@@ -42,31 +42,31 @@ class Users extends React.Component {
     return (
       <div>
         <Layout>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>Name</TableCell>
+                  <TableCell>Email</TableCell>
+                  <TableCell>Role</TableCell>
+                  <TableCell align="right">Status</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {rows.map(row => (
+                    <TableRow key={row.id}>
+                      <TableCell component="th" scope="row">
+                        {row.name}
+                      </TableCell>
+                      <TableCell>{row.email}</TableCell>
+                      <TableCell>{row.role}</TableCell>
+                      <TableCell align="right">{row.status}</TableCell>
+                    </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
         </Layout>
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
-                <TableCell>Role</TableCell>
-                <TableCell align="right">Status</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {rows.map(row => (
-                  <TableRow key={row.id}>
-                    <TableCell component="th" scope="row">
-                      {row.name}
-                    </TableCell>
-                    <TableCell>{row.email}</TableCell>
-                    <TableCell>{row.role}</TableCell>
-                    <TableCell align="right">{row.status}</TableCell>
-                  </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
       </div>
     )
   }

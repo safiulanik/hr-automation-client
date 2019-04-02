@@ -14,6 +14,7 @@ import Modal from '@material-ui/core/es/Modal/Modal';
 import TextField from '@material-ui/core/es/TextField/TextField';
 import Button from '@material-ui/core/es/Button/Button';
 import settings from '../local_settings';
+import Layout from "../containers/Layout";
 
 const styles = theme => ({
   root: {
@@ -83,71 +84,73 @@ class Requests extends  React.Component{
 
     return (
       <div>
-        <Modal
-          aria-labelledby="simple-modal-title"
-          aria-describedby="simple-modal-description"
-          open={this.state.open}
-          onClose={this.handleClose}
-        >
-          <div style={getModalStyle()} className={classes.paper}>
-            <p>
-              Status: {this.state.request.status}
-            </p>
-            <form>
-              <TextField
-                id="request-details"
-                label="Details"
-                multiline
-                fullWidth
-                rowsMax="4"
-                className={classes.textField}
-                value={this.state.details}
-                onChange={this.handleChange('details')}
-                margin="normal"
-                variant="outlined"
-              />
+        <Layout>
+          <Modal
+            aria-labelledby="simple-modal-title"
+            aria-describedby="simple-modal-description"
+            open={this.state.open}
+            onClose={this.handleClose}
+          >
+            <div style={getModalStyle()} className={classes.paper}>
+              <p>
+                Status: {this.state.request.status}
+              </p>
+              <form>
+                <TextField
+                  id="request-details"
+                  label="Details"
+                  multiline
+                  fullWidth
+                  rowsMax="4"
+                  className={classes.textField}
+                  value={this.state.details}
+                  onChange={this.handleChange('details')}
+                  margin="normal"
+                  variant="outlined"
+                />
 
-              <Button variant="contained" color="primary" className={classes.button}>
-                Submit
-              </Button>
+                <Button variant="contained" color="primary" className={classes.button}>
+                  Submit
+                </Button>
 
-            </form>
-          </div>
-        </Modal>
+              </form>
+            </div>
+          </Modal>
 
-        <Paper className={classes.root}>
-          <Table className={classes.table}>
-            <TableHead>
-              <TableRow>
-                <TableCell>ID</TableCell>
-                <TableCell>Details</TableCell>
-                <TableCell>Status</TableCell>
-                <TableCell>Created On</TableCell>
-                <TableCell>Action</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {requests && requests.map(request => (
-                <TableRow key={request.id}>
-                  <TableCell>{request.id}</TableCell>
-                  <TableCell scope="row">
-                    {request.details}
-                  </TableCell>
-                  <TableCell>{request.status}</TableCell>
-                  <TableCell>{request.create_date}</TableCell>
-                  <TableCell>
-                    <IconButton className={classes.button} aria-label="Delete">
-                      <DeleteIcon />
-                    </IconButton>
-                    <IconButton className={classes.button} aria-label="Edit" onClick={() => this.handleEdit(request.id)}>
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <TableCell>ID</TableCell>
+                  <TableCell>Details</TableCell>
+                  <TableCell>Status</TableCell>
+                  <TableCell>Created On</TableCell>
+                  <TableCell>Action</TableCell>
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Paper>
+              </TableHead>
+              <TableBody>
+                {requests && requests.map(request => (
+                  <TableRow key={request.id}>
+                    <TableCell>{request.id}</TableCell>
+                    <TableCell scope="row">
+                      {request.details}
+                    </TableCell>
+                    <TableCell>{request.status}</TableCell>
+                    <TableCell>{request.create_date}</TableCell>
+                    <TableCell>
+                      <IconButton className={classes.button} aria-label="Delete">
+                        <DeleteIcon />
+                      </IconButton>
+                      <IconButton className={classes.button} aria-label="Edit" onClick={() => this.handleEdit(request.id)}>
+                        <EditIcon />
+                      </IconButton>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </Layout>
       </div>
     );
   }

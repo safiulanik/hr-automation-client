@@ -81,8 +81,7 @@ class Layout extends React.Component {
           <div className={classes.toolbar} />
           <Grid container spacing={24}>
             <Grid item xs={12}>
-              {/*<Route exact path="/users" component={Users} />*/}
-
+              {this.props.children}
             </Grid>
           </Grid>
         </main>
