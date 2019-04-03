@@ -18,6 +18,7 @@ import Grid from "@material-ui/core/Grid/index";
 import {Link as RouterLink} from "react-router-dom";
 import Select from "@material-ui/core/Select";
 import MenuItem from "@material-ui/core/MenuItem";
+import Cookies from 'js-cookie';
 
 const styles = theme => ({
     main: {
@@ -90,11 +91,10 @@ class SignUp extends React.Component {
             email: res.data.email,
             username: res.data.email,
         });
-        // this.props.userHasAuthenticated(true);
         alert('Registration successful! You can login now.');
         history.push("/");
       }).catch(err => {
-          alert('Login failed!');
+          alert('Registration failed!');
           console.log('error loading data', err);
       });
     } catch (e) {
