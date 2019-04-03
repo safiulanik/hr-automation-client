@@ -1,22 +1,34 @@
 import React, {Component} from 'react';
-import Login from "./containers/Login";
+import Login from "./components/Login";
 import Requests from "./components/Requests";
 import Users from "./components/Users";
-import Layout from "./containers/Layout";
-import {Router, Route, Switch} from "react-router-dom";
+import {Router, Route, Switch, Redirect} from "react-router-dom";
 import AppliedRoute from "./components/AppliedRoute";
 import NotFound from "./containers/NotFound";
 import axios from "axios";
 import settings from "./local_settings";
 import history from "./components/history";
+import Home from "./components/Home";
+import Logout from "./components/Logout";
+import SignUp from "./components/SignUp";
+import Cookies from 'js-cookie';
+
+export const getAccessToken = () => Cookies.get('access_token');
+export const getUser = () => Cookies.get('user');
+export const isAuthenticated = () => !!getAccessToken();
 
 class App extends Component {
   constructor(props) {
     super(props);
+    console.log(getAccessToken());
+    console.log(isAuthenticated());
 
     this.state = {
       isAuthenticated: false,
-      isAuthenticating: true
+      isAuthenticating: true,
+      firstName: '',
+      role: '',
+      token: '',
     };
   }
 
@@ -51,18 +63,31 @@ class App extends Component {
   render() {
     const childProps = {
       isAuthenticated: this.state.isAuthenticated,
+      firstName: this.state.firstName,
+      role: this.state.role,
+      token: this.state.token,
       userHasAuthenticated: this.userHasAuthenticated
     };
+    console.log(this.props);
+
+    const PrivateRoute = ({ component: Component, ...rest }) => (
+        <Route {...rest} render={(props) => (
+            isAuthenticated() === true
+                ? <Component {...props} />
+                : <Redirect to='/login' />
+        )} />
+    );
 
     return (
       <div className="App">
         <Router history={history}>
           <Switch>
-            <Route exact path="/" component={Layout} props={childProps} />
+            <PrivateRoute exact path="/" component={Home} props={childProps} />
             <AppliedRoute path="/login" exact component={Login} props={childProps} />
-            <Route exact path="/requests" component={Requests} props={childProps} />
-            <Route exact path="/users" component={Users} props={childProps} />
-            <Route exact path="/logout" component={Login} />
+            <PrivateRoute exact path="/requests" component={Requests} />
+            <PrivateRoute exact path="/users" component={Users} props={childProps} />
+            <PrivateRoute exact path="/logout" component={Logout} />
+            <Route exact path="/sign-up" component={SignUp} />
             <Route component={NotFound} />
           </Switch>
         </Router>
@@ -72,15 +97,3 @@ class App extends Component {
 }
 
 export default (App);
-
-{/*{this.state.isAuthenticated*/}
-{/*    ? <NavItem onClick={this.handleLogout}>Logout</NavItem>*/}
-{/*    : <Fragment>*/}
-{/*      <LinkContainer to="/signup">*/}
-{/*        <NavItem>Signup</NavItem>*/}
-{/*      </LinkContainer>*/}
-{/*      <LinkContainer to="/login">*/}
-{/*        <NavItem>Login</NavItem>*/}
-{/*      </LinkContainer>*/}
-{/*    </Fragment>*/}
-{/*}*/}

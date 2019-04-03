@@ -32,17 +32,6 @@ const styles = theme => ({
 class MenuDrawer extends React.Component {
     constructor(props) {
         super(props);
-        let isAuthenticated = false;
-        console.log(this.props);
-        try {
-            isAuthenticated = this.props.props.history.location.state.isAuthenticated;
-        } catch (e) {
-            console.log(e);
-            isAuthenticated = false;
-        }
-        console.log(isAuthenticated);
-        this.state = {isAuthenticated: isAuthenticated};
-        console.log(this.state.isAuthenticated);
     }
 
     render() {
@@ -54,32 +43,15 @@ class MenuDrawer extends React.Component {
           <Divider />
           <List>
             {[
-              {
-                name: 'Home',
-                url: '',
-                icon: <HomeIcon/>
-              },
-              {
-                name: 'Requests',
-                url: '/requests',
-                icon: <RequestIcon/>
-              },
-              {
-                name: 'Users',
-                url: '/users',
-                icon: <PeopleIcon/>
-              },
-              {
-                name: 'Logout',
-                url: '/logout',
-                icon: <LogoutIcon/>
-              }
+                { name: 'Home', url: '/', icon: <HomeIcon/> },
+                { name: 'Requests', url: '/requests', icon: <RequestIcon/> },
+                { name: 'Users', url: '/users', icon: <PeopleIcon/> },
+                { name: 'Logout', url: '/logout', icon: <LogoutIcon/>}
             ].map((menu) => {
               return (
-                <Link component={RouterLink} to={{
-                    pathname: menu.url,
-                    state: {isAuthenticated: true}
-                }} key={menu.name}>
+                <Link component={RouterLink}
+                      to={menu.url}
+                      key={menu.name}>
                   <ListItem button>
                     <ListItemIcon>{menu.icon}</ListItemIcon>
                     <ListItemText primary={menu.name} />

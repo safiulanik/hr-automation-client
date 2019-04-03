@@ -9,7 +9,6 @@ import Typography from '@material-ui/core/Typography';
 import { withStyles } from '@material-ui/core/styles';
 import MenuDrawer from '../components/MenuDrawer';
 import Grid from '@material-ui/core/es/Grid/Grid';
-import history from '../components/history';
 
 const drawerWidth = 240;
 
@@ -41,19 +40,6 @@ class Layout extends React.Component {
 
   constructor(props) {
     super(props);
-    let isAuthenticated = false;
-    console.log(this.props);
-    try {
-      isAuthenticated = this.props.location.state.isAuthenticated;
-    } catch (e) {
-      try {
-        isAuthenticated = this.props.props.location.state.isAuthenticated;
-      } catch (e) {
-        console.log(e);
-        isAuthenticated = false;
-      }
-    }
-    if(!isAuthenticated) history.push('/login');
   }
 
   state = {
@@ -86,7 +72,8 @@ class Layout extends React.Component {
         </AppBar>
         <MenuDrawer
           handleDrawerToggle={this.handleDrawerToggle}
-          mobileOpen={this.state.mobileOpen} props={this.props} />
+          mobileOpen={this.state.mobileOpen}
+          props={this.props} />
         <main className={classes.content}>
           <div className={classes.toolbar} />
           <Grid container spacing={24}>

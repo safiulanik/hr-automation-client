@@ -4,17 +4,23 @@ import Avatar from '@material-ui/core/Avatar/index';
 import Button from '@material-ui/core/Button/index';
 import CssBaseline from '@material-ui/core/CssBaseline/index';
 import FormControl from '@material-ui/core/FormControl/index';
-import FormControlLabel from '@material-ui/core/FormControlLabel/index';
-import Checkbox from '@material-ui/core/Checkbox/index';
 import Input from '@material-ui/core/Input/index';
 import InputLabel from '@material-ui/core/InputLabel/index';
 import LockOutlinedIcon from '@material-ui/icons/LockOutlined';
+import Add from '@material-ui/icons/Add';
 import Paper from '@material-ui/core/Paper/index';
 import Typography from '@material-ui/core/Typography/index';
 import withStyles from '@material-ui/core/styles/withStyles';
-import axios from "axios";
+import axios from "axios/index";
 import settings from "../local_settings";
-import history from '../components/history';
+import history from './history';
+import Grid from "@material-ui/core/Grid/index";
+import {Link as RouterLink} from "react-router-dom";
+import Cookies from 'js-cookie';
+
+export const getAccessToken = () => Cookies.get('access_token');
+export const getUser = () => Cookies.get('user');
+export const isAuthenticated = () => !!getAccessToken();
 
 const styles = theme => ({
     main: {
@@ -55,12 +61,9 @@ class Login extends React.Component {
       username: "",
       password: "",
       token: "",
-      email: ""
+      email: "", firstName: ""
     };
-  }
-
-  validateForm() {
-    return this.state.username.length > 0 && this.state.password.length > 0;
+    if(isAuthenticated()) history.push('/');
   }
 
   handleChange = event => {
@@ -77,18 +80,27 @@ class Login extends React.Component {
         username: this.state.username,
         password: this.state.password
       }).then(res => {
+        console.log(res.data);
         this.setState({
             token: res.data.token,
-            email: res.data.user.email
+            email: res.data.user.email,
+            firstName: res.data.user.first_name,
+            role: 'engineer',
         });
+        Cookies.set('access_token', res.data.token);
+        Cookies.set('user', res.data.user);
         this.props.userHasAuthenticated(true);
         history.push({
           pathname: "/",
           state: {
-              isAuthenticated: this.props.isAuthenticated
+              isAuthenticated: this.props.isAuthenticated,
+              firstName: this.state.firstName,
+              token: this.state.token,
+              role: this.state.role,
           }
         });
       }).catch(err => {
+          alert('Login failed!');
           console.log('error loading data', err);
       });
     } catch (e) {
@@ -124,20 +136,19 @@ class Login extends React.Component {
                        value={this.state.password} onChange={this.handleChange} />
             </FormControl>
 
-            <FormControlLabel
-                control={<Checkbox value="remember" color="primary" />}
-                label="Remember me"
-            />
-            <Button
-                type="submit"
-                fullWidth
-                variant="contained"
-                color="primary"
-                disabled={!this.validateForm()}
-                className={classes.submit}
-            >
-                Sign in
-            </Button>
+            <Grid container spacing={24}>
+                <Grid item xs={6}>
+                    <Button type="submit" fullWidth variant="contained"
+                            color="primary" className={classes.submit}
+                    > Sign in</Button>
+                </Grid>
+                <Grid item xs={6}>
+                    <Button type="button" fullWidth variant="contained"
+                            color="primary" className={classes.submit}
+                            component={RouterLink} to="/sign-up"
+                    > <Add /> Sign Up </Button>
+                </Grid>
+            </Grid>
           </form>
         </Paper>
       </main>
