@@ -8,6 +8,7 @@ import TableBody from '@material-ui/core/es/TableBody/TableBody';
 import withStyles from '@material-ui/core/es/styles/withStyles';
 import IconButton from '@material-ui/core/IconButton';
 import DeleteIcon from '@material-ui/icons/Delete';
+import ArrowIcon from '@material-ui/icons/ArrowForward';
 import AddIcon from '@material-ui/icons/Add';
 import EditIcon from '@material-ui/icons/Edit';
 import axios from 'axios';
@@ -22,6 +23,8 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogActions from "@material-ui/core/DialogActions";
+import MenuItem from "@material-ui/core/MenuItem";
+import Select from "@material-ui/core/Select";
 
 export const getAccessToken = () => Cookies.get('access_token');
 export const getUser = () => Cookies.get('user');
@@ -63,7 +66,12 @@ class Requests extends  React.Component{
     this.state = {
       'modalAction': '',
       'userId': JSON.parse(getUser()).id,
-      'openDialog': false
+      'role': JSON.parse(getUser()).role,
+      'openDialog': false,
+      'requestStatus': 'open',
+      'requestId': 0,
+      'requestDetails': '',
+      'openProcessRequest': false,
     }
   }
 
@@ -92,9 +100,34 @@ class Requests extends  React.Component{
     this.setState({ [name]: event.target.value });
   };
 
+  handleChangeRequestStatus = event => {
+    this.setState({ requestStatus: event.target.value });
+    axios.put(settings.base_url + '/api/v1/request/'+this.state.requestId, {
+      'status': event.target.value,
+      'details': this.state.requestDetails,
+    }, {
+      headers: {
+        Authorization: 'JWT '  + getAccessToken(),
+      }
+    }).then(res => {
+      console.log(res.data);
+      alert('Request processing successful!');
+      this.componentDidMount();
+    }).catch(err => {
+      console.log('error loading data', err);
+    });
+  };
+
   handleEdit = (reqId) => {
     const [request] = this.state.requests.filter(req => req.id === reqId);
     this.setState({ open: true, details: request.details, request, modalAction: 'edit'});
+  };
+
+  handleProcessRequest = (reqId) => {
+    const [request] = this.state.requests.filter(req => req.id === reqId);
+    this.setState({ openProcessRequest: true,
+      requestStatus: request.status,
+      requestId: request.id, requestDetails:request.details });
   };
 
   handleCreate = () => {
@@ -118,6 +151,10 @@ class Requests extends  React.Component{
 
   handleClose = () => {
     this.setState({ open: false });
+  };
+
+  handleCloseProcessRequest = () => {
+    this.setState({ openProcessRequest: false });
   };
 
   handleClickOpenDialog = (reqId) => {
@@ -205,6 +242,26 @@ class Requests extends  React.Component{
               </form>
             </div>
           </Modal>
+          <Modal
+              aria-labelledby="process-request"
+              open={this.state.openProcessRequest}
+              onClose={this.handleCloseProcessRequest}
+              disableEnforceFocus
+          >
+            <div style={{
+              textAlign: 'center', top: `${50}%`, left: `${50}%`,
+              transform: `translate(-${50}%, -${50}%)`,
+            }} className={classes.paper}>
+              <Select
+                  value={this.state.requestStatus}
+                  onChange={this.handleChangeRequestStatus}
+              >
+                <MenuItem value={'open'}>Open</MenuItem>
+                <MenuItem value={'hr_reviewed'}>HR Reviewed</MenuItem>
+                <MenuItem value={'processed'}>Processed</MenuItem>
+              </Select>
+            </div>
+          </Modal>
           <Paper className={classes.root}>
             <Table className={classes.table}>
               <TableHead>
@@ -214,6 +271,8 @@ class Requests extends  React.Component{
                   <TableCell>Status</TableCell>
                   <TableCell>Created On</TableCell>
                   <TableCell>Action</TableCell>
+                  {this.state.role === 'hr' || this.state.role === 'manager' ?
+                      <TableCell>Process Request</TableCell> : null}
                 </TableRow>
               </TableHead>
               <TableBody>
@@ -235,6 +294,13 @@ class Requests extends  React.Component{
                         <EditIcon />
                       </IconButton>
                     </TableCell>
+                    {this.state.role === 'hr' || this.state.role === 'manager' ?
+                        <TableCell>
+                          <IconButton className={classes.button} aria-label="Process"
+                                      onClick={() => this.handleProcessRequest(request.id)}>
+                            <ArrowIcon />
+                          </IconButton>
+                        </TableCell> : null}
                   </TableRow>
                 ))}
               </TableBody>

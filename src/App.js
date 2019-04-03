@@ -85,7 +85,7 @@ class App extends Component {
             <PrivateRoute exact path="/" component={Home} props={childProps} />
             <AppliedRoute path="/login" exact component={Login} props={childProps} />
             <PrivateRoute exact path="/requests" component={Requests} />
-            <PrivateRoute exact path="/users" component={Users} props={childProps} />
+            {/*<PrivateRoute exact path="/users" component={Users} props={childProps} />*/}
             <PrivateRoute exact path="/logout" component={Logout} />
             <Route exact path="/sign-up" component={SignUp} />
             <Route component={NotFound} />
