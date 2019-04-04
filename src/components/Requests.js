@@ -72,6 +72,7 @@ class Requests extends  React.Component{
       'requestId': 0,
       'requestDetails': '',
       'openProcessRequest': false,
+      'open': false,
     }
   }
 
