@@ -106,6 +106,7 @@ class Requests extends  React.Component{
     axios.put(settings.base_url + '/api/v1/request/'+this.state.requestId, {
       'status': event.target.value,
       'details': this.state.requestDetails,
+      'write_uid': this.state.userId,
     }, {
       headers: {
         Authorization: 'JWT '  + getAccessToken(),
@@ -271,6 +272,7 @@ class Requests extends  React.Component{
                   <TableCell>Details</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Created On</TableCell>
+                  <TableCell>Processed By</TableCell>
                   <TableCell>Action</TableCell>
                   {this.state.role === 'hr' || this.state.role === 'manager' ?
                       <TableCell>Process Request</TableCell> : null}
@@ -285,6 +287,7 @@ class Requests extends  React.Component{
                     </TableCell>
                     <TableCell>{request.status}</TableCell>
                     <TableCell>{request.create_date}</TableCell>
+                    <TableCell>{request.write_uid}</TableCell>
                     <TableCell>
                       <IconButton className={classes.button} aria-label="Delete"
                                   onClick={() => this.handleClickOpenDialog(request.id)}>
