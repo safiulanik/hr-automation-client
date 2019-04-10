@@ -272,6 +272,7 @@ class Requests extends  React.Component{
                   <TableCell>Details</TableCell>
                   <TableCell>Status</TableCell>
                   <TableCell>Created On</TableCell>
+                  <TableCell>Created By</TableCell>
                   <TableCell>Processed By</TableCell>
                   <TableCell>Action</TableCell>
                   {this.state.role === 'hr' || this.state.role === 'manager' ?
@@ -287,7 +288,8 @@ class Requests extends  React.Component{
                     </TableCell>
                     <TableCell>{request.status}</TableCell>
                     <TableCell>{request.create_date}</TableCell>
-                    <TableCell>{request.write_uid}</TableCell>
+                    <TableCell>{request.created_by}</TableCell>
+                    <TableCell>{request.processed_by}</TableCell>
                     <TableCell>
                       <IconButton className={classes.button} aria-label="Delete"
                                   onClick={() => this.handleClickOpenDialog(request.id)}>
